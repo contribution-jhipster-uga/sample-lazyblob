@@ -1,0 +1,56 @@
+{
+    "name": "Comment",
+    "fields": [
+        {
+            "fieldName": "text",
+            "javadoc": "Text",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required",
+                "minlength"
+            ],
+            "fieldValidateRulesMinlength": 5
+        },
+        {
+            "fieldName": "createdAt",
+            "javadoc": "Creation date",
+            "fieldType": "Instant",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "updatedAt",
+            "javadoc": "Update date",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "user",
+            "otherEntityRelationshipName": "comment",
+            "relationshipName": "from",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "otherEntityName": "photo",
+            "otherEntityRelationshipName": "comment",
+            "relationshipName": "photo",
+            "otherEntityField": "title"
+        }
+    ],
+    "changelogDate": "20200201065303",
+    "javadoc": "Entity Comment",
+    "entityTableName": "comment",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": true,
+    "fluentMethods": true,
+    "readOnly": false,
+    "clientRootFolder": "",
+    "applications": "*",
+    "angularJSSuffix": "photo"
+}

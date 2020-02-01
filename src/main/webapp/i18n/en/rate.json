@@ -1,0 +1,31 @@
+{
+  "lazyblobApp": {
+    "rate": {
+      "home": {
+        "title": "Rates",
+        "createLabel": "Create a new Rate",
+        "createOrEditLabel": "Create or edit a Rate",
+        "notFound": "No Rates found"
+      },
+      "created": "A new Rate is created with identifier {{ param }}",
+      "updated": "A Rate is updated with identifier {{ param }}",
+      "deleted": "A Rate is deleted with identifier {{ param }}",
+      "delete": {
+        "question": "Are you sure you want to delete Rate {{ id }}?"
+      },
+      "detail": {
+        "title": "Rate"
+      },
+      "rate": "Rate",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "photo": "Photo",
+      "from": "From",
+      "help": {
+        "rate": "Rate",
+        "createdAt": "Creation date",
+        "updatedAt": "Update date"
+      }
+    }
+  }
+}

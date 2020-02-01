@@ -1,0 +1,43 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="album">
+            <h2><span jhiTranslate="lazyblobApp.album.detail.title">Album</span> {{album.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="lazyblobApp.album.title" [ngbTooltip]="'lazyblobApp.album.help.title' | translate">Title</span></dt>
+                <dd>
+                    <span>{{album.title}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.album.note" [ngbTooltip]="'lazyblobApp.album.help.note' | translate">Note</span></dt>
+                <dd>
+                    <span>{{album.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.album.createdAt" [ngbTooltip]="'lazyblobApp.album.help.createdAt' | translate">Created At</span></dt>
+                <dd>
+                    <span>{{album.createdAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.album.updatedAt" [ngbTooltip]="'lazyblobApp.album.help.updatedAt' | translate">Updated At</span></dt>
+                <dd>
+                    <span>{{album.updatedAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.album.ownedBy">Owned By</span></dt>
+                <dd>
+                    {{album.ownedByLogin}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/album-photo', album.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

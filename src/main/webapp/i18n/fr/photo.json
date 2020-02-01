@@ -1,0 +1,47 @@
+{
+  "lazyblobApp": {
+    "photo": {
+      "home": {
+        "title": "Photos",
+        "createLabel": "Créer un nouveau Photo",
+        "createOrEditLabel": "Créer ou éditer un Photo",
+        "notFound": "Aucun Photo trouvé"
+      },
+      "created": "Un nouveau Photo a été créé avec l'identifiant {{ param }}",
+      "updated": "Le Photo avec l'identifiant {{ param }} a été mis à jour",
+      "deleted": "Le Photo avec l'identifiant {{ param }} a été supprimé",
+      "delete": {
+        "question": "Etes-vous certain de vouloir supprimer le Photo {{ id }} ?"
+      },
+      "detail": {
+        "title": "Photo"
+      },
+      "title": "Title",
+      "note": "Note",
+      "image": "Image",
+      "imageSha1": "Image Sha 1",
+      "thumbnailx1": "Thumbnailx 1",
+      "thumbnailx1Sha1": "Thumbnailx 1 Sha 1",
+      "thumbnailx2": "Thumbnailx 2",
+      "thumbnailx2Sha1": "Thumbnailx 2 Sha 1",
+      "exif": "Exif",
+      "extractedText": "Extracted Text",
+      "detectedObjects": "Detected Objects",
+      "createdAt": "Created At",
+      "updatedAt": "Updated At",
+      "belongTo": "Belong To",
+      "help": {
+        "title": "Title",
+        "note": "Note",
+        "image": "Image",
+        "thumbnailx1": "Thumbnail x1",
+        "thumbnailx2": "Thumbnail x2",
+        "exif": "Extracted EXIF from the photo (LAZY)",
+        "extractedText": "Extracted text by the Tesseract OCR (LAZY)",
+        "detectedObjects": "Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)",
+        "createdAt": "Creation date",
+        "updatedAt": "Update date"
+      }
+    }
+  }
+}

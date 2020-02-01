@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="rate">
+            <h2><span jhiTranslate="lazyblobApp.rate.detail.title">Rate</span> {{rate.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="lazyblobApp.rate.rate" [ngbTooltip]="'lazyblobApp.rate.help.rate' | translate">Rate</span></dt>
+                <dd>
+                    <span>{{rate.rate}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.rate.createdAt" [ngbTooltip]="'lazyblobApp.rate.help.createdAt' | translate">Created At</span></dt>
+                <dd>
+                    <span>{{rate.createdAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.rate.updatedAt" [ngbTooltip]="'lazyblobApp.rate.help.updatedAt' | translate">Updated At</span></dt>
+                <dd>
+                    <span>{{rate.updatedAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.rate.photo">Photo</span></dt>
+                <dd>
+                    <div *ngIf="rate.photoId">
+                        <a [routerLink]="['/photo-photo', rate.photoId, 'view']">{{rate.photoTitle}}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.rate.from">From</span></dt>
+                <dd>
+                    {{rate.fromLogin}}
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/rate-photo', rate.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

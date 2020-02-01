@@ -1,0 +1,45 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="comment">
+            <h2><span jhiTranslate="lazyblobApp.comment.detail.title">Comment</span> {{comment.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="lazyblobApp.comment.text" [ngbTooltip]="'lazyblobApp.comment.help.text' | translate">Text</span></dt>
+                <dd>
+                    <span>{{comment.text}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.comment.createdAt" [ngbTooltip]="'lazyblobApp.comment.help.createdAt' | translate">Created At</span></dt>
+                <dd>
+                    <span>{{comment.createdAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.comment.updatedAt" [ngbTooltip]="'lazyblobApp.comment.help.updatedAt' | translate">Updated At</span></dt>
+                <dd>
+                    <span>{{comment.updatedAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.comment.from">From</span></dt>
+                <dd>
+                    {{comment.fromLogin}}
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.comment.photo">Photo</span></dt>
+                <dd>
+                    <div *ngIf="comment.photoId">
+                        <a [routerLink]="['/photo-photo', comment.photoId, 'view']">{{comment.photoTitle}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/comment-photo', comment.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,96 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="photo">
+            <h2><span jhiTranslate="lazyblobApp.photo.detail.title">Photo</span> {{photo.id}}</h2>
+            <hr>
+            <jhi-alert-error></jhi-alert-error>
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="lazyblobApp.photo.title" [ngbTooltip]="'lazyblobApp.photo.help.title' | translate">Title</span></dt>
+                <dd>
+                    <span>{{photo.title}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.note" [ngbTooltip]="'lazyblobApp.photo.help.note' | translate">Note</span></dt>
+                <dd>
+                    <span>{{photo.note}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.image" [ngbTooltip]="'lazyblobApp.photo.help.image' | translate">Image</span></dt>
+                <dd>
+                    <div *ngIf="photo.image">
+                        <a (click)="openFile(photo.imageContentType, photo.image)">
+                            <img [src]="'data:' + photo.imageContentType + ';base64,' + photo.image" style="max-width: 100%;" alt="photo image"/>
+                        </a>
+                        {{photo.imageContentType}}, {{byteSize(photo.image)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.imageSha1">Image Sha 1</span></dt>
+                <dd>
+                    <span>{{photo.imageSha1}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.thumbnailx1" [ngbTooltip]="'lazyblobApp.photo.help.thumbnailx1' | translate">Thumbnailx 1</span></dt>
+                <dd>
+                    <div *ngIf="photo.thumbnailx1">
+                        <a (click)="openFile(photo.thumbnailx1ContentType, photo.thumbnailx1)">
+                            <img [src]="'data:' + photo.thumbnailx1ContentType + ';base64,' + photo.thumbnailx1" style="max-width: 100%;" alt="photo image"/>
+                        </a>
+                        {{photo.thumbnailx1ContentType}}, {{byteSize(photo.thumbnailx1)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.thumbnailx1Sha1">Thumbnailx 1 Sha 1</span></dt>
+                <dd>
+                    <span>{{photo.thumbnailx1Sha1}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.thumbnailx2" [ngbTooltip]="'lazyblobApp.photo.help.thumbnailx2' | translate">Thumbnailx 2</span></dt>
+                <dd>
+                    <div *ngIf="photo.thumbnailx2">
+                        <a (click)="openFile(photo.thumbnailx2ContentType, photo.thumbnailx2)">
+                            <img [src]="'data:' + photo.thumbnailx2ContentType + ';base64,' + photo.thumbnailx2" style="max-width: 100%;" alt="photo image"/>
+                        </a>
+                        {{photo.thumbnailx2ContentType}}, {{byteSize(photo.thumbnailx2)}}
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.thumbnailx2Sha1">Thumbnailx 2 Sha 1</span></dt>
+                <dd>
+                    <span>{{photo.thumbnailx2Sha1}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.exif" [ngbTooltip]="'lazyblobApp.photo.help.exif' | translate">Exif</span></dt>
+                <dd>
+                    <span>{{photo.exif}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.extractedText" [ngbTooltip]="'lazyblobApp.photo.help.extractedText' | translate">Extracted Text</span></dt>
+                <dd>
+                    <span>{{photo.extractedText}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.detectedObjects" [ngbTooltip]="'lazyblobApp.photo.help.detectedObjects' | translate">Detected Objects</span></dt>
+                <dd>
+                    <span>{{photo.detectedObjects}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.createdAt" [ngbTooltip]="'lazyblobApp.photo.help.createdAt' | translate">Created At</span></dt>
+                <dd>
+                    <span>{{photo.createdAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.updatedAt" [ngbTooltip]="'lazyblobApp.photo.help.updatedAt' | translate">Updated At</span></dt>
+                <dd>
+                    <span>{{photo.updatedAt}}</span>
+                </dd>
+                <dt><span jhiTranslate="lazyblobApp.photo.belongTo">Belong To</span></dt>
+                <dd>
+                    <div *ngIf="photo.belongToId">
+                        <a [routerLink]="['/album-photo', photo.belongToId, 'view']">{{photo.belongToTitle}}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon [icon]="'arrow-left'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/photo-photo', photo.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon [icon]="'pencil-alt'"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
