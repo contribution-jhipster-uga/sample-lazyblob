@@ -1,6 +1,10 @@
+/**
+* LazyBlob Generator Sample
+*/
 
 LEN_SHA = 40 
 IMAGE_MAX_BYTES = 5000000
+COMMENT_MIN_LENGTH = 5
 
 /**
  * Entity Photo
@@ -11,53 +15,53 @@ entity Photo {
      */
     title String,
 
-  /**
-  * Note
-  */
-  note String,
-  
-  /**
-  * Image
-  */
-  image ImageBlob required maxbytes(IMAGE_MAX_BYTES),
-  imageSha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
+    /**
+    * Note
+    */
+    note String,
+    
+    /**
+    * Image
+    */
+    image ImageBlob required maxbytes(IMAGE_MAX_BYTES),
+    imageSha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
 
-  /**
-  * Thumbnail x1
-  */
-  thumbnailx1 ImageBlob required maxbytes(IMAGE_MAX_BYTES),
-  thumbnailx1Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
+    /**
+    * Thumbnail x1
+    */
+    thumbnailx1 ImageBlob required maxbytes(IMAGE_MAX_BYTES),
+    thumbnailx1Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
 
-  /**
-  * Thumbnail x2
-  */
-  thumbnailx2 ImageBlob required maxbytes(IMAGE_MAX_BYTES),
-  thumbnailx2Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
+    /**
+    * Thumbnail x2
+    */
+    thumbnailx2 ImageBlob required maxbytes(IMAGE_MAX_BYTES),
+    thumbnailx2Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
 
-  /**
-  * Extracted EXIF from the photo (LAZY)
-  */
-  exif TextBlob,
+    /**
+    * Extracted EXIF from the photo (LAZY)
+    */
+    exif TextBlob,
 
-  /**
-  * Extracted text by the Tesseract OCR (LAZY)
-  */
-  extractedText TextBlob,
+    /**
+    * Extracted text by the Tesseract OCR (LAZY)
+    */
+    extractedText TextBlob,
 
-  /**
-  * Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)
-  */
-  detectedObjects TextBlob,
+    /**
+    * Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)
+    */
+    detectedObjects TextBlob,
 
-  /**
-  * Creation date
-  */
-  createdAt Instant required,
+    /**
+    * Creation date
+    */
+    createdAt Instant required,
 
-  /**
-  * Update date
-  */
-  updatedAt Instant
+    /**
+    * Update date
+    */
+    updatedAt Instant
 }
 
 /**
@@ -69,25 +73,73 @@ entity Album {
      */
     title String,
 
-  /**
-  * Note
-  */
-  note String,
+    /**
+    * Note
+    */
+    note String,
 
-  /**
-  * Creation date
-  */
-  createdAt Instant required,
+    /**
+    * Creation date
+    */
+    createdAt Instant required,
 
-  /**
-  * Update date
-  */
-  updatedAt Instant,
+    /**
+    * Update date
+    */
+    updatedAt Instant
 }
 
+/**
+ * Entity Comment
+ */
+entity Comment {
+      /**
+      * Text
+      */
+      text String required minlength(COMMENT_MIN_LENGTH),
+
+      /**
+      * Creation date
+      */
+      createdAt Instant required,
+
+      /**
+      * Update date
+      */
+      updatedAt Instant
+}
+
+/**
+ * Entity Rate
+ */
+entity Rate {
+      /**
+      * Rate
+      */
+      rate Integer min(0) max(5),
+
+      /**
+      * Creation date
+      */
+      createdAt Instant required,
+
+      /**
+      * Update date
+      */
+      updatedAt Instant
+}
+
+
 relationship ManyToOne {
+    Rate{photo(title)} to Photo/*{ratedBy}*/,
+    Rate{from(login)} to User,
+
+    Comment{from(login)} to User,
+    Comment{photo(title)} to Photo/*{commentedBy}*/,
+
     Album{ownedBy(login)} to User,
-    Photo{belongTo} to Album{photos}
+
+    Photo{belongTo(title)} to Album/*{photos}*/
 }
 
 // Set pagination options
