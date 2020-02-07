@@ -1,6 +1,7 @@
 package sample.lazyblob.domain;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.Type;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -38,6 +39,7 @@ public class Photo implements Serializable {
      * Image
      */
     
+    @Lazy
     @Lob
     @Column(name = "image", nullable = false)
     private byte[] image;
@@ -46,7 +48,7 @@ public class Photo implements Serializable {
     private String imageContentType;
 
     @Size(min = 40, max = 40)
-    @Pattern(regexp = "[a-fA-F0-9]{40}")
+    @Pattern(regexp = "([a-fA-F0-9]{40})?")
     @Column(name = "image_sha_1", length = 40)
     private String imageSha1;
 
@@ -54,6 +56,7 @@ public class Photo implements Serializable {
      * Thumbnail x1
      */
     
+    @Lazy
     @Lob
     @Column(name = "thumbnailx_1", nullable = false)
     private byte[] thumbnailx1;
@@ -62,7 +65,7 @@ public class Photo implements Serializable {
     private String thumbnailx1ContentType;
 
     @Size(min = 40, max = 40)
-    @Pattern(regexp = "[a-fA-F0-9]{40}")
+    @Pattern(regexp = "([a-fA-F0-9]{40})?")
     @Column(name = "thumbnailx_1_sha_1", length = 40)
     private String thumbnailx1Sha1;
 
@@ -70,6 +73,7 @@ public class Photo implements Serializable {
      * Thumbnail x2
      */
     
+    @Lazy
     @Lob
     @Column(name = "thumbnailx_2", nullable = false)
     private byte[] thumbnailx2;
@@ -78,13 +82,14 @@ public class Photo implements Serializable {
     private String thumbnailx2ContentType;
 
     @Size(min = 40, max = 40)
-    @Pattern(regexp = "[a-fA-F0-9]{40}")
+    @Pattern(regexp = "([a-fA-F0-9]{40})?")
     @Column(name = "thumbnailx_2_sha_1", length = 40)
     private String thumbnailx2Sha1;
 
     /**
      * Extracted EXIF from the photo (LAZY)
      */
+//    @Lazy
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     @Column(name = "exif")
@@ -93,6 +98,7 @@ public class Photo implements Serializable {
     /**
      * Extracted text by the Tesseract OCR (LAZY)
      */
+//    @Lazy
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     @Column(name = "extracted_text")
@@ -101,6 +107,7 @@ public class Photo implements Serializable {
     /**
      * Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)
      */
+//    @Lazy
     @Lob
     @Type(type = "org.hibernate.type.TextType")
     @Column(name = "detected_objects")

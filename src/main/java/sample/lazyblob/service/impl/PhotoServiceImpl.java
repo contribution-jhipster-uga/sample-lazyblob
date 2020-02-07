@@ -1,19 +1,30 @@
 package sample.lazyblob.service.impl;
 
-import sample.lazyblob.service.PhotoService;
-import sample.lazyblob.domain.Photo;
-import sample.lazyblob.repository.PhotoRepository;
-import sample.lazyblob.service.dto.PhotoDTO;
-import sample.lazyblob.service.mapper.PhotoMapper;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Optional;
+
+import javax.validation.constraints.NotNull;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import com.drew.imaging.ImageProcessingException;
+
+import sample.lazyblob.domain.Photo;
+import sample.lazyblob.repository.PhotoRepository;
+import sample.lazyblob.service.PhotoService;
+import sample.lazyblob.service.dto.PhotoDTO;
+import sample.lazyblob.service.mapper.PhotoMapper;
+import sample.lazyblob.service.util.MetadataUtil;
+import sample.lazyblob.service.util.MimeTypes;
+import sample.lazyblob.service.util.SHAUtil;
+import sample.lazyblob.service.util.ThumbnailUtil;
 
 /**
  * Service Implementation for managing {@link Photo}.
@@ -28,9 +39,29 @@ public class PhotoServiceImpl implements PhotoService {
 
     private final PhotoMapper photoMapper;
 
+	@NotNull(message = "thumbnail.x1.maxDim can not be null")
+	@Value("${thumbnail.x1.maxDim}")
+	private int x1MaxDim;
+
+	@NotNull(message = "thumbnail.x2.maxDim can not be null")
+	@Value("${thumbnail.x2.maxDim}")
+	private int x2MaxDim;
+
     public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMapper photoMapper) {
         this.photoRepository = photoRepository;
         this.photoMapper = photoMapper;
+    }
+
+    private void reset(PhotoDTO photoDTO) {
+    	photoDTO.setThumbnailx1(null);
+    	photoDTO.setThumbnailx1Sha1(null);
+    	photoDTO.setThumbnailx1ContentType(null);
+    	photoDTO.setThumbnailx2(null);
+    	photoDTO.setThumbnailx2Sha1(null);
+    	photoDTO.setThumbnailx2ContentType(null);
+    	photoDTO.setExif(null);
+    	photoDTO.setExtractedText(null);
+    	photoDTO.setDetectedObjects(null);    	
     }
 
     /**
@@ -42,6 +73,62 @@ public class PhotoServiceImpl implements PhotoService {
     @Override
     public PhotoDTO save(PhotoDTO photoDTO) {
         log.debug("Request to save Photo : {}", photoDTO);
+        
+		Instant now = Instant.now();
+        if(photoDTO.getId() == null) {
+        	// create entity
+        	photoDTO.setCreatedAt(now);
+        	photoDTO.setUpdatedAt(now);
+        } else {
+        	// update entity
+    		Photo photo = null;
+    		Long id = photoDTO.getId();
+    		if (id != null) {
+    			Optional<Photo> opt = photoRepository.findById(id);
+    			if (opt.isPresent()) {
+    				photo = opt.get();
+    			} else {
+    				log.error("Photo {} does not exist", id);
+    				return null;
+    			}
+    		}
+    		photoDTO.setCreatedAt(photo.getCreatedAt());
+        	photoDTO.setUpdatedAt(now);
+        }
+		byte[] image = photoDTO.getImage();
+		if(image!=null) {
+			photoDTO.setImageSha1(SHAUtil.hash(image));
+			try {
+				String mimeType = photoDTO.getImageContentType();
+				String formatName = MimeTypes.lookupExt(mimeType);
+				photoDTO.setThumbnailx1(ThumbnailUtil.scale(photoDTO.getImage(), x1MaxDim, formatName));
+				photoDTO.setThumbnailx1Sha1(SHAUtil.hash(photoDTO.getThumbnailx1()));
+				photoDTO.setThumbnailx1ContentType(mimeType);
+				
+				photoDTO.setThumbnailx2(ThumbnailUtil.scale(photoDTO.getImage(), x2MaxDim, formatName));
+				photoDTO.setThumbnailx2Sha1(SHAUtil.hash(photoDTO.getThumbnailx2()));
+				photoDTO.setThumbnailx2ContentType(mimeType);
+				
+				// Extract EXIF
+	            try {
+					photoDTO.setExif(MetadataUtil.extract(image));
+				} catch (ImageProcessingException e) {
+			        log.warn("Can not extract the image metadata", e);
+				}
+				// TODO Extract GPS tag from Metadata
+				// TODO Extract Text with OCR
+				// TODO Extract Objects with ImageAI
+				
+			} catch (IOException e) {
+		        log.warn("Can not thumbnail the image ", e);
+		        reset(photoDTO);
+			}
+		} else {
+	        reset(photoDTO);
+		}
+
+		// photoDTO.setBelongTo
+		
         Photo photo = photoMapper.toEntity(photoDTO);
         photo = photoRepository.save(photo);
         return photoMapper.toDto(photo);

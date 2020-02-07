@@ -37,33 +37,35 @@ public class PhotoDTO implements Serializable {
 
     private String imageContentType;
     @Size(min = 40, max = 40)
-    @Pattern(regexp = "[a-fA-F0-9]{40}")
+    @Pattern(regexp = "([a-fA-F0-9]{40})?")
     private String imageSha1;
 
     /**
      * Thumbnail x1
      */
     
-    @ApiModelProperty(value = "Thumbnail x1", required = true)
+    //@ApiModelProperty(value = "Thumbnail x1", required = true)
+    @ApiModelProperty(value = "Thumbnail x1")
     @Lob
     private byte[] thumbnailx1;
 
     private String thumbnailx1ContentType;
     @Size(min = 40, max = 40)
-    @Pattern(regexp = "[a-fA-F0-9]{40}")
+    @Pattern(regexp = "([a-fA-F0-9]{40})?")
     private String thumbnailx1Sha1;
 
     /**
      * Thumbnail x2
      */
     
-    @ApiModelProperty(value = "Thumbnail x2", required = true)
+    //@ApiModelProperty(value = "Thumbnail x2", required = true)
+    @ApiModelProperty(value = "Thumbnail x2")
     @Lob
     private byte[] thumbnailx2;
 
     private String thumbnailx2ContentType;
     @Size(min = 40, max = 40)
-    @Pattern(regexp = "[a-fA-F0-9]{40}")
+    @Pattern(regexp = "([a-fA-F0-9]{40})?")
     private String thumbnailx2Sha1;
 
     /**
@@ -90,8 +92,9 @@ public class PhotoDTO implements Serializable {
     /**
      * Creation date
      */
-    @NotNull
-    @ApiModelProperty(value = "Creation date", required = true)
+    //@NotNull
+    //@ApiModelProperty(value = "Creation date", required = true)
+    @ApiModelProperty(value = "Creation date")
     private Instant createdAt;
 
     /**

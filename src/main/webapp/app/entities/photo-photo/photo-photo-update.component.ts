@@ -28,18 +28,20 @@ export class PhotoPhotoUpdateComponent implements OnInit {
     note: [],
     image: [null, [Validators.required]],
     imageContentType: [],
-    imageSha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('[a-fA-F0-9]{40}')]],
+    /*
+    imageSha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('([a-fA-F0-9]{40})?')]],
     thumbnailx1: [null, [Validators.required]],
     thumbnailx1ContentType: [],
-    thumbnailx1Sha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('[a-fA-F0-9]{40}')]],
+    thumbnailx1Sha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('([a-fA-F0-9]{40})?')]],
     thumbnailx2: [null, [Validators.required]],
     thumbnailx2ContentType: [],
-    thumbnailx2Sha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('[a-fA-F0-9]{40}')]],
+    thumbnailx2Sha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('([a-fA-F0-9]{40})?')]],
     exif: [],
     extractedText: [],
     detectedObjects: [],
     createdAt: [null, [Validators.required]],
     updatedAt: [],
+    */
     belongToId: []
   });
 
@@ -70,6 +72,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       note: photo.note,
       image: photo.image,
       imageContentType: photo.imageContentType,
+      /*
       imageSha1: photo.imageSha1,
       thumbnailx1: photo.thumbnailx1,
       thumbnailx1ContentType: photo.thumbnailx1ContentType,
@@ -82,6 +85,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       detectedObjects: photo.detectedObjects,
       createdAt: photo.createdAt != null ? photo.createdAt.format(DATE_TIME_FORMAT) : null,
       updatedAt: photo.updatedAt != null ? photo.updatedAt.format(DATE_TIME_FORMAT) : null,
+      */
       belongToId: photo.belongToId
     });
   }
@@ -151,7 +155,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       note: this.editForm.get(['note']).value,
       imageContentType: this.editForm.get(['imageContentType']).value,
       image: this.editForm.get(['image']).value,
-      imageSha1: this.editForm.get(['imageSha1']).value,
+      /*imageSha1: this.editForm.get(['imageSha1']).value,
       thumbnailx1ContentType: this.editForm.get(['thumbnailx1ContentType']).value,
       thumbnailx1: this.editForm.get(['thumbnailx1']).value,
       thumbnailx1Sha1: this.editForm.get(['thumbnailx1Sha1']).value,
@@ -165,6 +169,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
         this.editForm.get(['createdAt']).value != null ? moment(this.editForm.get(['createdAt']).value, DATE_TIME_FORMAT) : undefined,
       updatedAt:
         this.editForm.get(['updatedAt']).value != null ? moment(this.editForm.get(['updatedAt']).value, DATE_TIME_FORMAT) : undefined,
+      */
       belongToId: this.editForm.get(['belongToId']).value
     };
   }

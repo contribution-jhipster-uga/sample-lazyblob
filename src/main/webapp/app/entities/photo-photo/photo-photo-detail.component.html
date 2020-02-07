@@ -78,6 +78,23 @@
                         <a [routerLink]="['/album-photo', photo.belongToId, 'view']">{{photo.belongToTitle}}</a>
                     </div>
                 </dd>
+
+                <dt><span>Image</span></dt>
+                <dd>
+                    <img [src]="'/api/photos/' + photo.id + '/image' | authImage | async"
+                        style="min-height: 100%; max-width: 100%;" />
+                </dd>
+                <dt><span>Thumbnail x1</span></dt>
+                <dd>
+                    <img [src]="'/api/photos/' + photo.id + '/thumbnailx1' | authImage | async"
+                        style="min-height: 100%; max-width: 100%;" />
+                </dd>
+                <dt><span>Thumbnail x2</span></dt>
+                <dd>
+                    <img [src]="'/api/photos/' + photo.id + '/thumbnailx2' | authImage | async"
+                        style="min-height: 100%; max-width: 100%;" />
+                </dd>
+
             </dl>
 
             <button type="submit"
