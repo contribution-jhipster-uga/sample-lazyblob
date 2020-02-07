@@ -46,9 +46,9 @@ entity Photo {
     thumbnailx2Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/([a-fA-F0-9]{40})?/),
 
     /**
-    * Extracted EXIF from the photo (LAZY)
+    * Extracted metadata from the photo (LAZY) : contains EXIF, GPS, ... information
     */
-    exif TextBlob,
+    metadata TextBlob,
 
     /**
     * Extracted latitude from the photo GPS metadata
@@ -148,7 +148,7 @@ entity Rate {
       /**
       * Creation date
       */
-      createdAt Instant required,
+      createdAt Instant,
 
       /**
       * Update date
