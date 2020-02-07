@@ -1,9 +1,10 @@
 /**
-* LazyBlob Generator Sample
+* LazyBlob Generator Demonstration
 */
 
 LEN_SHA = 40 
 IMAGE_MAX_BYTES = 5000000
+TITLE_MIN_LENGTH = 3
 COMMENT_MIN_LENGTH = 5
 
 /**
@@ -21,27 +22,53 @@ entity Photo {
     note String,
     
     /**
-    * Image
+    * Original image
     */
-    image ImageBlob required maxbytes(IMAGE_MAX_BYTES),
-    imageSha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
+    originalImage ImageBlob required maxbytes(IMAGE_MAX_BYTES),
+    originalImageSha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/([a-fA-F0-9]{40})?/),
+    
+    /**
+    * Image after watermarking and metadata removal
+    */
+    image ImageBlob maxbytes(IMAGE_MAX_BYTES),
+    imageSha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/([a-fA-F0-9]{40})?/),
 
     /**
-    * Thumbnail x1
+    * Thumbnail x1 (small resolution)
     */
-    thumbnailx1 ImageBlob required maxbytes(IMAGE_MAX_BYTES),
-    thumbnailx1Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
+    thumbnailx1 ImageBlob maxbytes(IMAGE_MAX_BYTES),
+    thumbnailx1Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/([a-fA-F0-9]{40})?/),
 
     /**
-    * Thumbnail x2
+    * Thumbnail x2 (medium resolution)
     */
-    thumbnailx2 ImageBlob required maxbytes(IMAGE_MAX_BYTES),
-    thumbnailx2Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/[a-fA-F0-9]{40}/),
+    thumbnailx2 ImageBlob maxbytes(IMAGE_MAX_BYTES),
+    thumbnailx2Sha1 String minlength(LEN_SHA) maxlength(LEN_SHA) pattern(/([a-fA-F0-9]{40})?/),
 
     /**
     * Extracted EXIF from the photo (LAZY)
     */
     exif TextBlob,
+
+    /**
+    * Extracted latitude from the photo GPS metadata
+    */
+    latitude Float,
+
+    /**
+    * Extracted longitude from the photo GPS metadata
+    */
+    longitude Float,
+
+    /**
+    * Extracted altitude from the photo GPS metadata
+    */
+    altitude Float,
+    
+    /**
+    * Extracted date stamp from the photo GPS metadata
+    */
+    dateStamp Instant,
 
     /**
     * Extracted text by the Tesseract OCR (LAZY)
@@ -56,7 +83,7 @@ entity Photo {
     /**
     * Creation date
     */
-    createdAt Instant required,
+    createdAt Instant,
 
     /**
     * Update date
@@ -71,17 +98,17 @@ entity Album {
     /**
      * Title
      */
-    title String,
+    title String required minlength(TITLE_MIN_LENGTH),
 
     /**
     * Note
     */
     note String,
-
+    
     /**
     * Creation date
     */
-    createdAt Instant required,
+    createdAt Instant,
 
     /**
     * Update date
@@ -101,7 +128,7 @@ entity Comment {
       /**
       * Creation date
       */
-      createdAt Instant required,
+      createdAt Instant,
 
       /**
       * Update date
@@ -143,13 +170,18 @@ relationship ManyToOne {
 }
 
 // Set pagination options
-paginate * with pagination
+paginate * with pagination except Photo
+paginate Photo with infinite-scroll
+
 // Use Data Transfert Objects (DTO)
 dto * with mapstruct
+
 // Set service options to all except few
 service all with serviceImpl
+
 // Set an angular suffix
 angularSuffix * with photo
+
 // Set search
 //search * with elasticsearch 
 //Set filtering
