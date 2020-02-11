@@ -119,9 +119,9 @@ public class PhotoResource {
 	/**
 	 * {@code GET  /photos} : get all the photos.
 	 *
-	 * 
+	 *
 	 * @param pageable the pagination information.
-	 * 
+	 *
 	 * @param criteria the criteria which the requested entities should match.
 	 * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list
 	 *         of photos in body.
@@ -130,6 +130,9 @@ public class PhotoResource {
 	public ResponseEntity<List<PhotoDTO>> getAllPhotos(PhotoCriteria criteria, Pageable pageable) {
 		log.debug("REST request to get Photos by criteria: {}", criteria);
 		Page<PhotoDTO> page = photoQueryService.findByCriteria(criteria, pageable);
+        for (PhotoDTO photo: page) {
+            reset(photo);
+        }
 		HttpHeaders headers = PaginationUtil
 				.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -159,8 +162,23 @@ public class PhotoResource {
 	public ResponseEntity<PhotoDTO> getPhoto(@PathVariable Long id) {
 		log.debug("REST request to get Photo : {}", id);
 		Optional<PhotoDTO> photoDTO = photoService.findOne(id);
+		reset(photoDTO.get());
 		return ResponseUtil.wrapOrNotFound(photoDTO);
 	}
+
+	private void reset(PhotoDTO photoDTO){
+	    photoDTO.setImage(null);
+	    photoDTO.setImageSha1(null);
+        photoDTO.setThumbnailx1(null);
+        photoDTO.setThumbnailx1Sha1(null);
+        photoDTO.setThumbnailx1ContentType(null);
+        photoDTO.setThumbnailx2(null);
+        photoDTO.setThumbnailx2Sha1(null);
+        photoDTO.setThumbnailx2ContentType(null);
+        photoDTO.setExif(null);
+        photoDTO.setExtractedText(null);
+        photoDTO.setDetectedObjects(null);
+    }
 
 	/**
 	 * {@code DELETE  /photos/:id} : delete the "id" photo.
@@ -230,14 +248,14 @@ public class PhotoResource {
 		}
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(null));
 	}
-	
+
 	/**
 	 *  cacheControl maxAge in minutes
 	 */
 	@Value("${lazyblob.cacheControl.maxAge}")
 	private long MAXAGE;
 
-	
+
 	/**
 	 * Helper for byte[] ResponseEntity
 	 * @param buf
@@ -271,7 +289,7 @@ public class PhotoResource {
 	 * @param buf can be null
 	 * @param contentType
 	 * @param updateAt can be null
-	 * @param sha1 
+	 * @param sha1
 	 * @param cacheControl
 	 * @param filename can be null
 	 * @return
@@ -279,10 +297,10 @@ public class PhotoResource {
 
 	private ResponseEntity<byte[]> getResponseEntity(@Nullable final byte[] buf, final String contentType,
 			final Instant updateAt, @NotNull final String sha1, final String cacheControl, final String filename) {
-		
+
 		HttpHeaders headers = new HttpHeaders();
 		if(buf!=null) {
-			headers.setContentLength(buf.length);			
+			headers.setContentLength(buf.length);
 		}
 		headers.setCacheControl(cacheControl);
 
