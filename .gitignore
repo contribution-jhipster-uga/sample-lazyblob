@@ -145,3 +145,8 @@ Desktop.ini
 # ESLint
 ######################
 .eslintcache
+
+######################
+# ImageAI - NN
+######################
+/src/main/java/sample/lazyblob/indexation/imageAI/*.h5
