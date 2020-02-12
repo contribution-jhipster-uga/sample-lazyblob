@@ -19,7 +19,7 @@ public interface PhotoService {
      * @param photoDTO the entity to save.
      * @return the persisted entity.
      */
-    PhotoDTO save(PhotoDTO photoDTO) throws IOException;
+    PhotoDTO save(PhotoDTO photoDTO);
 
     /**
      * Get all the photos.
