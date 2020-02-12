@@ -73,7 +73,7 @@ public class PhotoServiceImpl implements PhotoService {
      * @return the persisted entity.
      */
     @Override
-    public PhotoDTO save(PhotoDTO photoDTO) {
+    public PhotoDTO save(PhotoDTO photoDTO) throws IOException {
         log.debug("Request to save Photo : {}", photoDTO);
 
         Photo photo = null;
@@ -109,7 +109,14 @@ public class PhotoServiceImpl implements PhotoService {
                     photoDTO.setThumbnailx1(ThumbnailUtil.scale(photoDTO.getImage(), x1MaxDim, formatName));
                     photoDTO.setThumbnailx1Sha1(SHAUtil.hash(photoDTO.getThumbnailx1()));
                     photoDTO.setThumbnailx1ContentType(mimeType);
-                String filename = Indexation.createImagefromByteArray(image);
+                    photoDTO.setThumbnailx2(ThumbnailUtil.scale(photoDTO.getImage(), x2MaxDim, formatName));
+                    photoDTO.setThumbnailx2Sha1(SHAUtil.hash(photoDTO.getThumbnailx2()));
+                    photoDTO.setThumbnailx2ContentType(mimeType);
+                }catch(IOException e){
+                    log.warn("Can not thumbnail the image", e);
+                    reset(photoDTO);
+                }
+                    String filename = Indexation.createImagefromByteArray(image);
 
                 // Extract Exif
 	            try {
@@ -134,9 +141,6 @@ public class PhotoServiceImpl implements PhotoService {
                 }
 
 
-                    photoDTO.setThumbnailx2(ThumbnailUtil.scale(photoDTO.getImage(), x2MaxDim, formatName));
-                    photoDTO.setThumbnailx2Sha1(SHAUtil.hash(photoDTO.getThumbnailx2()));
-                    photoDTO.setThumbnailx2ContentType(mimeType);
 
             }else {
                 photoDTO.setImageSha1(sha1Image);

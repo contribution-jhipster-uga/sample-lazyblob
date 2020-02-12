@@ -5,6 +5,7 @@ import sample.lazyblob.service.dto.PhotoDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.io.IOException;
 import java.util.Optional;
 
 /**
@@ -18,7 +19,7 @@ public interface PhotoService {
      * @param photoDTO the entity to save.
      * @return the persisted entity.
      */
-    PhotoDTO save(PhotoDTO photoDTO);
+    PhotoDTO save(PhotoDTO photoDTO) throws IOException;
 
     /**
      * Get all the photos.
