@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import javax.validation.constraints.NotNull;
 
+import net.sourceforge.tess4j.TesseractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.drew.imaging.ImageProcessingException;
 
+import sample.lazyblob.indexation.Indexation;
 import sample.lazyblob.domain.Photo;
 import sample.lazyblob.repository.PhotoRepository;
 import sample.lazyblob.service.PhotoService;
@@ -107,25 +109,35 @@ public class PhotoServiceImpl implements PhotoService {
                     photoDTO.setThumbnailx1(ThumbnailUtil.scale(photoDTO.getImage(), x1MaxDim, formatName));
                     photoDTO.setThumbnailx1Sha1(SHAUtil.hash(photoDTO.getThumbnailx1()));
                     photoDTO.setThumbnailx1ContentType(mimeType);
+                String filename = Indexation.createImagefromByteArray(image);
+
+                // Extract Exif
+	            try {
+					photoDTO.setExif(MetadataUtil.extract(image));
+				} catch (ImageProcessingException  e) {
+			        log.warn("Can not extract the image metadata", e);
+				}
+				// TODO Extract GPS tag from Metadata
+
+				// Extract Text with OCR
+                try{
+                    photoDTO.setExtractedText(Indexation.parseTextFromImage(filename));
+                } catch (TesseractException e) {
+                    log.warn("Can not extract the image text", e);
+                }
+
+                // Extract Objects with ImageAI
+                try {
+                    photoDTO.setDetectedObjects(Indexation.imageAI(filename));
+                } catch (Exception e){
+                    log.warn("Can not extract the image detection object", e);
+                }
+
 
                     photoDTO.setThumbnailx2(ThumbnailUtil.scale(photoDTO.getImage(), x2MaxDim, formatName));
                     photoDTO.setThumbnailx2Sha1(SHAUtil.hash(photoDTO.getThumbnailx2()));
                     photoDTO.setThumbnailx2ContentType(mimeType);
 
-                    // Extract EXIF
-                    try {
-                        photoDTO.setExif(MetadataUtil.extract(image));
-                    } catch (ImageProcessingException e) {
-                        log.warn("Can not extract the image metadata", e);
-                    }
-                    // TODO Extract GPS tag from Metadata
-                    // TODO Extract Text with OCR
-                    // TODO Extract Objects with ImageAI
-
-                } catch (IOException e) {
-                    log.warn("Can not thumbnail the image ", e);
-                    reset(photoDTO);
-                }
             }else {
                 photoDTO.setImageSha1(sha1Image);
                 photoDTO.setThumbnailx1(photo.getThumbnailx1());
