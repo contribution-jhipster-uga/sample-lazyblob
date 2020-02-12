@@ -73,7 +73,7 @@ public class PhotoServiceImpl implements PhotoService {
      * @return the persisted entity.
      */
     @Override
-    public PhotoDTO save(PhotoDTO photoDTO) throws IOException {
+    public PhotoDTO save(PhotoDTO photoDTO) {
         log.debug("Request to save Photo : {}", photoDTO);
 
         Photo photo = null;
@@ -112,37 +112,35 @@ public class PhotoServiceImpl implements PhotoService {
                     photoDTO.setThumbnailx2(ThumbnailUtil.scale(photoDTO.getImage(), x2MaxDim, formatName));
                     photoDTO.setThumbnailx2Sha1(SHAUtil.hash(photoDTO.getThumbnailx2()));
                     photoDTO.setThumbnailx2ContentType(mimeType);
-                }catch(IOException e){
+
+                    String filename = Indexation.createImagefromByteArray(image);
+
+                    // Extract Exif
+                    try {
+                        photoDTO.setExif(MetadataUtil.extract(image));
+                    } catch (ImageProcessingException e) {
+                        log.warn("Can not extract the image metadata", e);
+                    }
+                    // TODO Extract GPS tag from Metadata
+
+                    // Extract Text with OCR
+                    try {
+                        photoDTO.setExtractedText(Indexation.parseTextFromImage(filename));
+                    } catch (TesseractException e) {
+                        log.warn("Can not extract the image text", e);
+                    }
+
+                    // Extract Objects with ImageAI
+                    try {
+                        photoDTO.setDetectedObjects(Indexation.imageAI(filename));
+                    } catch (Exception e) {
+                        log.warn("Can not extract the image detection object", e);
+                    }
+                } catch (IOException e) {
                     log.warn("Can not thumbnail the image", e);
                     reset(photoDTO);
                 }
-                    String filename = Indexation.createImagefromByteArray(image);
-
-                // Extract Exif
-	            try {
-					photoDTO.setExif(MetadataUtil.extract(image));
-				} catch (ImageProcessingException  e) {
-			        log.warn("Can not extract the image metadata", e);
-				}
-				// TODO Extract GPS tag from Metadata
-
-				// Extract Text with OCR
-                try{
-                    photoDTO.setExtractedText(Indexation.parseTextFromImage(filename));
-                } catch (TesseractException e) {
-                    log.warn("Can not extract the image text", e);
-                }
-
-                // Extract Objects with ImageAI
-                try {
-                    photoDTO.setDetectedObjects(Indexation.imageAI(filename));
-                } catch (Exception e){
-                    log.warn("Can not extract the image detection object", e);
-                }
-
-
-
-            }else {
+            } else {
                 photoDTO.setImageSha1(sha1Image);
                 photoDTO.setThumbnailx1(photo.getThumbnailx1());
                 photoDTO.setThumbnailx1Sha1(photo.getThumbnailx1Sha1());
