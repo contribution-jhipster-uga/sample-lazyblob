@@ -7,11 +7,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class PhotoMapperTest {
 
-    private PhotoMapper photoMapper;
+    private PhotoMapperLazy photoMapper;
 
     @BeforeEach
     public void setUp() {
-        photoMapper = new PhotoMapperImpl();
+        photoMapper = new PhotoMapperLazy();
     }
 
     @Test

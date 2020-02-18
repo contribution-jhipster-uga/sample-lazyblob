@@ -17,7 +17,7 @@ type EntityArrayResponseType = HttpResponse<IPhotoPhoto[]>;
 export class PhotoPhotoService {
   public resourceUrl = SERVER_API_URL + 'api/photos';
 
-  constructor(protected http: HttpClient) {}
+  constructor(public http: HttpClient) {}
 
   create(photo: IPhotoPhoto): Observable<EntityResponseType> {
     const copy = this.convertDateFromClient(photo);

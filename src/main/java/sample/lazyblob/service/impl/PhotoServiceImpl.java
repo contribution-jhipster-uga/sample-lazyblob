@@ -17,12 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.drew.imaging.ImageProcessingException;
 
+import sample.lazyblob.domain.PhotoLite;
 import sample.lazyblob.indexation.Indexation;
 import sample.lazyblob.domain.Photo;
+import sample.lazyblob.repository.PhotoLiteRepository;
 import sample.lazyblob.repository.PhotoRepository;
 import sample.lazyblob.service.PhotoService;
 import sample.lazyblob.service.dto.PhotoDTO;
+import sample.lazyblob.service.mapper.PhotoLiteMapper;
 import sample.lazyblob.service.mapper.PhotoMapper;
+import sample.lazyblob.service.mapper.PhotoMapperLazy;
 import sample.lazyblob.service.util.MetadataUtil;
 import sample.lazyblob.service.util.MimeTypes;
 import sample.lazyblob.service.util.SHAUtil;
@@ -38,7 +42,9 @@ public class PhotoServiceImpl implements PhotoService {
     private final Logger log = LoggerFactory.getLogger(PhotoServiceImpl.class);
 
     private final PhotoRepository photoRepository;
+    private final PhotoLiteRepository photoLiteRepository;
 
+    private final PhotoLiteMapper photoLiteMapper;
     private final PhotoMapper photoMapper;
 
     @NotNull(message = "thumbnail.x1.maxDim can not be null")
@@ -49,9 +55,11 @@ public class PhotoServiceImpl implements PhotoService {
     @Value("${thumbnail.x2.maxDim}")
     private int x2MaxDim;
 
-    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoMapper photoMapper) {
+    public PhotoServiceImpl(PhotoRepository photoRepository, PhotoLiteRepository photoLiteRepository, PhotoLiteMapper photoLiteMapper, PhotoMapper photoMapper) {
         this.photoRepository = photoRepository;
+        this.photoLiteRepository = photoLiteRepository;
         this.photoMapper = photoMapper;
+        this.photoLiteMapper = photoLiteMapper;
     }
 
     private void reset(PhotoDTO photoDTO) {
@@ -116,7 +124,7 @@ public class PhotoServiceImpl implements PhotoService {
                     String filename = Indexation.createImagefromByteArray(image);
 
                     // Extract Exif
-                    try {
+                  /*  try {
                         photoDTO.setExif(MetadataUtil.extract(image));
                     } catch (ImageProcessingException e) {
                         log.warn("Can not extract the image metadata", e);
@@ -135,7 +143,7 @@ public class PhotoServiceImpl implements PhotoService {
                         photoDTO.setDetectedObjects(Indexation.imageAI(filename));
                     } catch (Exception e) {
                         log.warn("Can not extract the image detection object", e);
-                    }
+                    }*/
                 } catch (IOException e) {
                     log.warn("Can not thumbnail the image", e);
                     reset(photoDTO);
@@ -173,8 +181,8 @@ public class PhotoServiceImpl implements PhotoService {
     @Transactional(readOnly = true)
     public Page<PhotoDTO> findAll(Pageable pageable) {
         log.debug("Request to get all Photos");
-        return photoRepository.findAll(pageable)
-            .map(photoMapper::toDto);
+        return photoLiteRepository.findAll(pageable)
+            .map(photoLiteMapper::toDto);
     }
 
 
@@ -188,8 +196,8 @@ public class PhotoServiceImpl implements PhotoService {
     @Transactional(readOnly = true)
     public Optional<PhotoDTO> findOne(Long id) {
         log.debug("Request to get Photo : {}", id);
-        return photoRepository.findById(id)
-            .map(photoMapper::toDto);
+        return photoLiteRepository.findById(id)
+            .map(photoLiteMapper::toDto);
     }
 
     /**

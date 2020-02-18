@@ -130,9 +130,9 @@ public class PhotoResource {
 	public ResponseEntity<List<PhotoDTO>> getAllPhotos(PhotoCriteria criteria, Pageable pageable) {
 		log.debug("REST request to get Photos by criteria: {}", criteria);
 		Page<PhotoDTO> page = photoQueryService.findByCriteria(criteria, pageable);
-        for (PhotoDTO photo: page) {
+        /*for (PhotoDTO photo: page) {
             reset(photo);
-        }
+        }*/
 		HttpHeaders headers = PaginationUtil
 				.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -162,19 +162,19 @@ public class PhotoResource {
 	public ResponseEntity<PhotoDTO> getPhoto(@PathVariable Long id) {
 		log.debug("REST request to get Photo : {}", id);
 		Optional<PhotoDTO> photoDTO = photoService.findOne(id);
-		reset(photoDTO.get());
+		//reset(photoDTO.get());
 		return ResponseUtil.wrapOrNotFound(photoDTO);
 	}
 
 	private void reset(PhotoDTO photoDTO){
 	    photoDTO.setImage(null);
-	    photoDTO.setImageSha1(null);
+	    //photoDTO.setImageSha1(null);
         photoDTO.setThumbnailx1(null);
-        photoDTO.setThumbnailx1Sha1(null);
-        photoDTO.setThumbnailx1ContentType(null);
+        //photoDTO.setThumbnailx1Sha1(null);
+        //photoDTO.setThumbnailx1ContentType(null);
         photoDTO.setThumbnailx2(null);
-        photoDTO.setThumbnailx2Sha1(null);
-        photoDTO.setThumbnailx2ContentType(null);
+        //photoDTO.setThumbnailx2Sha1(null);
+        //photoDTO.setThumbnailx2ContentType(null);
         photoDTO.setExif(null);
         photoDTO.setExtractedText(null);
         photoDTO.setDetectedObjects(null);

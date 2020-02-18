@@ -15,6 +15,8 @@ public interface PhotoMapper extends EntityMapper<PhotoDTO, Photo> {
     @Mapping(source = "belongTo.title", target = "belongToTitle")
     PhotoDTO toDto(Photo photo);
 
+
+
     @Mapping(source = "belongToId", target = "belongTo")
     Photo toEntity(PhotoDTO photoDTO);
 
