@@ -1,12 +1,5 @@
 package sample.lazyblob.service.impl;
 
-import java.io.IOException;
-import java.time.Instant;
-import java.util.Optional;
-
-import javax.validation.constraints.NotNull;
-
-import net.sourceforge.tess4j.TesseractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,23 +7,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.drew.imaging.ImageProcessingException;
-
-import sample.lazyblob.domain.PhotoLite;
-import sample.lazyblob.indexation.Indexation;
 import sample.lazyblob.domain.Photo;
+import sample.lazyblob.indexation.Indexation;
 import sample.lazyblob.repository.PhotoLiteRepository;
 import sample.lazyblob.repository.PhotoRepository;
 import sample.lazyblob.service.PhotoService;
 import sample.lazyblob.service.dto.PhotoDTO;
 import sample.lazyblob.service.mapper.PhotoLiteMapper;
 import sample.lazyblob.service.mapper.PhotoMapper;
-import sample.lazyblob.service.mapper.PhotoMapperLazy;
-import sample.lazyblob.service.util.MetadataUtil;
 import sample.lazyblob.service.util.MimeTypes;
 import sample.lazyblob.service.util.SHAUtil;
 import sample.lazyblob.service.util.ThumbnailUtil;
+
+import javax.validation.constraints.NotNull;
+import java.io.IOException;
+import java.time.Instant;
+import java.util.Optional;
 
 /**
  * Service Implementation for managing {@link Photo}.
@@ -198,6 +190,14 @@ public class PhotoServiceImpl implements PhotoService {
         log.debug("Request to get Photo : {}", id);
         return photoLiteRepository.findById(id)
             .map(photoLiteMapper::toDto);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Optional<PhotoDTO> findOneWithImage(Long id) {
+        log.debug("Request to get Photo : {}", id);
+        return photoRepository.findById(id)
+            .map(photoMapper::toDto);
     }
 
     /**

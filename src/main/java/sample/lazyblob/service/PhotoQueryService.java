@@ -22,7 +22,6 @@ import sample.lazyblob.service.dto.PhotoCriteria;
 import sample.lazyblob.service.dto.PhotoDTO;
 import sample.lazyblob.service.mapper.PhotoLiteMapper;
 import sample.lazyblob.service.mapper.PhotoMapper;
-import sample.lazyblob.service.mapper.PhotoMapperLazy;
 
 /**
  * Service for executing complex queries for {@link Photo} entities in the database.

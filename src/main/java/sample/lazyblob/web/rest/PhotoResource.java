@@ -205,7 +205,7 @@ public class PhotoResource {
 		Optional<String> login = SecurityUtils.getCurrentUserLogin();
 		log.debug("REST request from {} to get the {} of {} with id={}",  login, blob, applicationName, id);
 
-		final Optional<PhotoDTO> photoDTO = photoService.findOne(id);
+		final Optional<PhotoDTO> photoDTO = photoService.findOneWithImage(id);
 		if (photoDTO.isPresent()) {
 			final PhotoDTO d = photoDTO.get();
 			String contentType = null;
