@@ -38,6 +38,8 @@ public interface PhotoService {
      */
     Optional<PhotoDTO> findOne(Long id);
 
+    Optional<PhotoDTO> findOneWithImage(Long id);
+
     /**
      * Delete the "id" photo.
      *

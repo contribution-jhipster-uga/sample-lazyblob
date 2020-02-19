@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lazyblobApp.photo.image" for="field_image" [ngbTooltip]="'lazyblobApp.photo.help.image' | translate">Image</label>
                     <div>
-                        <img [src]="'/api/photos/' + editForm.get('id').value + '/image' | authImage | async" style="max-height: 100px;"  alt="photo image"/>
+                            <img [src]="editForm.get('image').value | authImage | async" style="max-height: 100px;"  alt="photo image"/>
                         <div *ngIf="editForm.get('image').value" class="form-text text-danger clearfix">
                             <span class="pull-left">{{editForm.get('imageContentType').value}}, {{byteSize(editForm.get('image').value)}}</span>
                             <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">

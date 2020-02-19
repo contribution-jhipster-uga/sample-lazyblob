@@ -14,12 +14,21 @@ import { IPhotoPhoto } from 'app/shared/model/photo-photo.model';
 
 @Injectable({ providedIn: 'root' })
 export class PhotoPhotoResolve implements Resolve<IPhotoPhoto> {
+  private result: PhotoPhoto;
   constructor(private service: PhotoPhotoService) {}
 
   resolve(route: ActivatedRouteSnapshot): Observable<IPhotoPhoto> {
     const id = route.params['id'];
     if (id) {
-      return this.service.find(id).pipe(map((photo: HttpResponse<PhotoPhoto>) => photo.body));
+      return this.service.find(id).pipe(
+        map((photo: HttpResponse<PhotoPhoto>) => {
+          this.result = photo.body;
+          this.service.http
+            .get('/api/photos/' + this.result.id + '/image', { responseType: 'arraybuffer' })
+            .subscribe(res => (this.result.image = window.URL.createObjectURL(new Blob([res], { type: 'image/png' }))));
+          return this.result;
+        })
+      );
     }
     return of(new PhotoPhoto());
   }

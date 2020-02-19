@@ -39,6 +39,7 @@ import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import io.micrometer.core.annotation.Timed;
+import sample.lazyblob.domain.Photo;
 import sample.lazyblob.security.AuthoritiesConstants;
 import sample.lazyblob.security.SecurityUtils;
 import sample.lazyblob.service.PhotoQueryService;
@@ -130,9 +131,9 @@ public class PhotoResource {
 	public ResponseEntity<List<PhotoDTO>> getAllPhotos(PhotoCriteria criteria, Pageable pageable) {
 		log.debug("REST request to get Photos by criteria: {}", criteria);
 		Page<PhotoDTO> page = photoQueryService.findByCriteria(criteria, pageable);
-        for (PhotoDTO photo: page) {
+        /*for (PhotoDTO photo: page) {
             reset(photo);
-        }
+        }*/
 		HttpHeaders headers = PaginationUtil
 				.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 		return ResponseEntity.ok().headers(headers).body(page.getContent());
@@ -162,19 +163,19 @@ public class PhotoResource {
 	public ResponseEntity<PhotoDTO> getPhoto(@PathVariable Long id) {
 		log.debug("REST request to get Photo : {}", id);
 		Optional<PhotoDTO> photoDTO = photoService.findOne(id);
-		reset(photoDTO.get());
+		//reset(photoDTO.get());
 		return ResponseUtil.wrapOrNotFound(photoDTO);
 	}
 
 	private void reset(PhotoDTO photoDTO){
 	    photoDTO.setImage(null);
-	    photoDTO.setImageSha1(null);
+	    //photoDTO.setImageSha1(null);
         photoDTO.setThumbnailx1(null);
-        photoDTO.setThumbnailx1Sha1(null);
-        photoDTO.setThumbnailx1ContentType(null);
+        //photoDTO.setThumbnailx1Sha1(null);
+        //photoDTO.setThumbnailx1ContentType(null);
         photoDTO.setThumbnailx2(null);
-        photoDTO.setThumbnailx2Sha1(null);
-        photoDTO.setThumbnailx2ContentType(null);
+        //photoDTO.setThumbnailx2Sha1(null);
+        //photoDTO.setThumbnailx2ContentType(null);
         photoDTO.setExif(null);
         photoDTO.setExtractedText(null);
         photoDTO.setDetectedObjects(null);
@@ -211,40 +212,40 @@ public class PhotoResource {
 			String contentType = null;
 			String sha1 = null;
 
-			final byte[] buf;
+			//final byte[] buf;
 			switch (blob) {
 			case "image":
-				buf = d.getImage();
-				if (buf != null) {
+				//buf = d.getImage();
+				if ((sha1 = d.getImageSha1()) != null) {
 					contentType = d.getImageContentType();
-					sha1 = d.getImageSha1();
+					//sha1 = d.getImageSha1();
 				}
 				break;
 			case "thumbnailx1":
-				buf = d.getThumbnailx1();
-				if (buf != null) {
+				//buf = d.getThumbnailx1();
+				if ((sha1 = d.getThumbnailx1Sha1()) != null) {
 					contentType = d.getThumbnailx1ContentType();
-					sha1 = d.getThumbnailx1Sha1();
+					//sha1 = d.getThumbnailx1Sha1();
 				}
 				break;
 
 			case "thumbnailx2":
-				buf = d.getThumbnailx2();
-				if (buf != null) {
+				//buf = d.getThumbnailx2();
+				if ((sha1 = d.getThumbnailx2Sha1()) != null) {
 					contentType = d.getThumbnailx2ContentType();
-					sha1 = d.getThumbnailx2Sha1();
+					//sha1 = d.getThumbnailx2Sha1();
 				}
 				break;
 
 			default:
-				buf = null;
+				// = null;
 			}
 
-			if (buf != null) {
+			//if (buf != null) {
 				String ext = MimeTypes.lookupExt(contentType);
 				String filename = ENTITY_NAME + "_" + id + "." + blob + "." + ext;
-				return getResponseEntity(buf, sha1, contentType, d.getUpdatedAt(), ifNoneMatch, filename);
-			}
+				return getResponseEntity(d.getId(),sha1, contentType, d.getUpdatedAt(), ifNoneMatch, filename);
+			//}
 		}
 		return ResponseUtil.wrapOrNotFound(Optional.ofNullable(null));
 	}
@@ -258,7 +259,7 @@ public class PhotoResource {
 
 	/**
 	 * Helper for byte[] ResponseEntity
-	 * @param buf
+	 * @param id
 	 * @param sha1
 	 * @param contentType
 	 * @param dateModification
@@ -266,8 +267,8 @@ public class PhotoResource {
 	 * @param filename
 	 * @return
 	 */
-	private ResponseEntity<byte[]> getResponseEntity(final byte[] buf, final String sha1, final String contentType,
-			final Instant dateModification, final String ifNoneMatch, final String filename) {
+	private ResponseEntity<byte[]> getResponseEntity(final Long id,final String sha1, final String contentType,
+                                                     final Instant dateModification, final String ifNoneMatch, final String filename) {
 		// sélectionner la politique de caching en fonction de l'authorité du sujet
 		final String cacheControl;
 		if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
@@ -279,6 +280,7 @@ public class PhotoResource {
 		if (ifNoneMatch.equals("\"" + sha1 + "\"")) {
 			return getResponseEntity(null, contentType, dateModification, sha1, cacheControl, filename);
 		} else {
+		    byte[] buf = photoService.findOneWithImage(id).get().getImage();
 			return getResponseEntity(buf, contentType, dateModification, sha1, cacheControl, filename);
 		}
 	}

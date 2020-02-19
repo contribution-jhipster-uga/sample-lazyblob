@@ -16,9 +16,11 @@ import io.github.jhipster.service.QueryService;
 
 import sample.lazyblob.domain.Photo;
 import sample.lazyblob.domain.*; // for static metamodels
+import sample.lazyblob.repository.PhotoLiteRepository;
 import sample.lazyblob.repository.PhotoRepository;
 import sample.lazyblob.service.dto.PhotoCriteria;
 import sample.lazyblob.service.dto.PhotoDTO;
+import sample.lazyblob.service.mapper.PhotoLiteMapper;
 import sample.lazyblob.service.mapper.PhotoMapper;
 
 /**
@@ -29,17 +31,22 @@ import sample.lazyblob.service.mapper.PhotoMapper;
  */
 @Service
 @Transactional(readOnly = true)
-public class PhotoQueryService extends QueryService<Photo> {
+public class PhotoQueryService extends QueryService<PhotoLite> {
 
     private final Logger log = LoggerFactory.getLogger(PhotoQueryService.class);
 
     private final PhotoRepository photoRepository;
+    private final PhotoLiteRepository photoLiteRepository;
 
     private final PhotoMapper photoMapper;
+    private final PhotoLiteMapper photoLiteMapper;
 
-    public PhotoQueryService(PhotoRepository photoRepository, PhotoMapper photoMapper) {
+
+    public PhotoQueryService(PhotoRepository photoRepository, PhotoLiteRepository photoLiteRepository, PhotoMapper photoMapper, PhotoLiteMapper photoLiteMapper) {
         this.photoRepository = photoRepository;
+        this.photoLiteRepository = photoLiteRepository;
         this.photoMapper = photoMapper;
+        this.photoLiteMapper = photoLiteMapper;
     }
 
     /**
@@ -50,8 +57,8 @@ public class PhotoQueryService extends QueryService<Photo> {
     @Transactional(readOnly = true)
     public List<PhotoDTO> findByCriteria(PhotoCriteria criteria) {
         log.debug("find by criteria : {}", criteria);
-        final Specification<Photo> specification = createSpecification(criteria);
-        return photoMapper.toDto(photoRepository.findAll(specification));
+        final Specification<PhotoLite> specification = createSpecification(criteria);
+        return photoLiteMapper.toDto(photoLiteRepository.findAll(specification));
     }
 
     /**
@@ -63,9 +70,9 @@ public class PhotoQueryService extends QueryService<Photo> {
     @Transactional(readOnly = true)
     public Page<PhotoDTO> findByCriteria(PhotoCriteria criteria, Pageable page) {
         log.debug("find by criteria : {}, page: {}", criteria, page);
-        final Specification<Photo> specification = createSpecification(criteria);
-        return photoRepository.findAll(specification, page)
-            .map(photoMapper::toDto);
+        final Specification<PhotoLite> specification = createSpecification(criteria);
+        return photoLiteRepository.findAll(specification, page)
+            .map(photoLiteMapper::toDto);
     }
 
     /**
@@ -76,8 +83,8 @@ public class PhotoQueryService extends QueryService<Photo> {
     @Transactional(readOnly = true)
     public long countByCriteria(PhotoCriteria criteria) {
         log.debug("count by criteria : {}", criteria);
-        final Specification<Photo> specification = createSpecification(criteria);
-        return photoRepository.count(specification);
+        final Specification<PhotoLite> specification = createSpecification(criteria);
+        return photoLiteRepository.count(specification);
     }
 
     /**
@@ -85,36 +92,26 @@ public class PhotoQueryService extends QueryService<Photo> {
      * @param criteria The object which holds all the filters, which the entities should match.
      * @return the matching {@link Specification} of the entity.
      */
-    protected Specification<Photo> createSpecification(PhotoCriteria criteria) {
-        Specification<Photo> specification = Specification.where(null);
+    protected Specification<PhotoLite> createSpecification(PhotoCriteria criteria) {
+        Specification<PhotoLite> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getId() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getId(), Photo_.id));
+                specification = specification.and(buildRangeSpecification(criteria.getId(), PhotoLite_.id));
             }
             if (criteria.getTitle() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getTitle(), Photo_.title));
+                specification = specification.and(buildStringSpecification(criteria.getTitle(), PhotoLite_.title));
             }
             if (criteria.getNote() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getNote(), Photo_.note));
+                specification = specification.and(buildStringSpecification(criteria.getNote(), PhotoLite_.note));
             }
             if (criteria.getImageSha1() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getImageSha1(), Photo_.imageSha1));
+                specification = specification.and(buildStringSpecification(criteria.getImageSha1(), PhotoLite_.imageSha1));
             }
             if (criteria.getThumbnailx1Sha1() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailx1Sha1(), Photo_.thumbnailx1Sha1));
+                specification = specification.and(buildStringSpecification(criteria.getThumbnailx1Sha1(), PhotoLite_.thumbnailx1Sha1));
             }
             if (criteria.getThumbnailx2Sha1() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getThumbnailx2Sha1(), Photo_.thumbnailx2Sha1));
-            }
-            if (criteria.getCreatedAt() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getCreatedAt(), Photo_.createdAt));
-            }
-            if (criteria.getUpdatedAt() != null) {
-                specification = specification.and(buildRangeSpecification(criteria.getUpdatedAt(), Photo_.updatedAt));
-            }
-            if (criteria.getBelongToId() != null) {
-                specification = specification.and(buildSpecification(criteria.getBelongToId(),
-                    root -> root.join(Photo_.belongTo, JoinType.LEFT).get(Album_.id)));
+                specification = specification.and(buildStringSpecification(criteria.getThumbnailx2Sha1(), PhotoLite_.thumbnailx2Sha1));
             }
         }
         return specification;
