@@ -1,5 +1,7 @@
 package sample.lazyblob.service.impl;
 
+import com.drew.imaging.ImageProcessingException;
+import net.sourceforge.tess4j.TesseractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +17,7 @@ import sample.lazyblob.service.PhotoService;
 import sample.lazyblob.service.dto.PhotoDTO;
 import sample.lazyblob.service.mapper.PhotoLiteMapper;
 import sample.lazyblob.service.mapper.PhotoMapper;
+import sample.lazyblob.service.util.MetadataUtil;
 import sample.lazyblob.service.util.MimeTypes;
 import sample.lazyblob.service.util.SHAUtil;
 import sample.lazyblob.service.util.ThumbnailUtil;
@@ -101,8 +104,8 @@ public class PhotoServiceImpl implements PhotoService {
         if (image != null) {
             String sha1Image = SHAUtil.hash((image));
             System.out.println();
+            photoDTO.setImageSha1(sha1Image);
             if (photo == null || !photo.getImageSha1().equals(sha1Image)) {
-                photoDTO.setImageSha1(sha1Image);
                 try {
                     String mimeType = photoDTO.getImageContentType();
                     String formatName = MimeTypes.lookupExt(mimeType);
@@ -116,7 +119,7 @@ public class PhotoServiceImpl implements PhotoService {
                     String filename = Indexation.createImagefromByteArray(image);
 
                     // Extract Exif
-                  /*  try {
+                    try {
                         photoDTO.setExif(MetadataUtil.extract(image));
                     } catch (ImageProcessingException e) {
                         log.warn("Can not extract the image metadata", e);
@@ -135,13 +138,12 @@ public class PhotoServiceImpl implements PhotoService {
                         photoDTO.setDetectedObjects(Indexation.imageAI(filename));
                     } catch (Exception e) {
                         log.warn("Can not extract the image detection object", e);
-                    }*/
+                    }
                 } catch (IOException e) {
                     log.warn("Can not thumbnail the image", e);
                     reset(photoDTO);
                 }
             } else {
-                photoDTO.setImageSha1(sha1Image);
                 photoDTO.setThumbnailx1(photo.getThumbnailx1());
                 photoDTO.setThumbnailx1Sha1(photo.getThumbnailx1Sha1());
                 photoDTO.setThumbnailx1ContentType(photo.getThumbnailx2ContentType());

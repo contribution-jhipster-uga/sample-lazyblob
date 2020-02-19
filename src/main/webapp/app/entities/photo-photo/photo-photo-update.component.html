@@ -19,10 +19,20 @@
                     <input type="text" class="form-control" name="note" id="field_note"
                            formControlName="note"/>
                 </div>
+
+                <dt><span>Image</span></dt>
+                <dd>
+                    <img [src]="'/api/photos/' + photo.id + '/image' | authImage | async"
+                         style="min-height: 100%; max-width: 100%;" />
+                </dd>
+
+                <!--
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lazyblobApp.photo.image" for="field_image" [ngbTooltip]="'lazyblobApp.photo.help.image' | translate">Image</label>
                     <div>
-                            <img [src]="editForm.get('image').value | authImage | async" style="max-height: 100px;"  alt="photo image"/>
+                        <img [src]="'/api/photos/' + photo.id + '/image' | authImage | async"
+                             style="max-height: 30px;" alt="photo image"/>
+
                         <div *ngIf="editForm.get('image').value" class="form-text text-danger clearfix">
                             <span class="pull-left">{{editForm.get('imageContentType').value}}, {{byteSize(editForm.get('image').value)}}</span>
                             <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
@@ -30,6 +40,7 @@
                             </button>
                         </div>
                         <input type="file" id="file_image" (change)="setFileData($event, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+
                     </div>
                     <input type="hidden" class="form-control" name="image" id="field_image"
                            formControlName="image"/>
@@ -46,6 +57,8 @@
                         </small>
                     </div>
                 </div>
+                -->
+
                 <!--
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lazyblobApp.photo.imageSha1" for="field_imageSha1">Image Sha 1</label>
