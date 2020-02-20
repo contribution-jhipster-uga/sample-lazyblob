@@ -129,11 +129,12 @@ export class PhotoPhotoComponent implements OnInit, OnDestroy {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     this.photos = data;
-    /* this.photos.forEach(p => {
+    /*this.photos.forEach(p => {
       this.photoService.http
-        .get('/api/photos/' + p.id + '/image', { responseType: 'arraybuffer' })
-        .subscribe(res => (p.image = window.URL.createObjectURL(new Blob([res], { type: 'image/png' }))));
-      this.photoService.http
+        .get('/api/photos/' + p.id + '/image', { responseType: 'text' })
+        .subscribe(res => (p.image = btoa(res)));
+    });
+      /*this.photoService.http
         .get('/api/photos/' + p.id + '/thumbnailx1', { responseType: 'arraybuffer' })
         .subscribe(res => (p.thumbnailx1 = window.URL.createObjectURL(new Blob([res], { type: 'image/png' }))));
       this.photoService.http
