@@ -27,7 +27,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
     title: [],
     note: [],
     image: [null, [Validators.required]],
-    imageContentType: [],
+    imageContentType: []
     /*
     imageSha1: [null, [Validators.minLength(40), Validators.maxLength(40), Validators.pattern('([a-fA-F0-9]{40})?')]],
     thumbnailx1: [null, [Validators.required]],
@@ -42,7 +42,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
     createdAt: [null, [Validators.required]],
     updatedAt: [],
     */
-    belongToId: []
+    //belongToId: []
   });
 
   constructor(
@@ -71,7 +71,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       title: photo.title,
       note: photo.note,
       image: photo.image,
-      imageContentType: photo.imageContentType,
+      imageContentType: photo.imageContentType
       /*
       imageSha1: photo.imageSha1,
       thumbnailx1: photo.thumbnailx1,
@@ -86,7 +86,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       createdAt: photo.createdAt != null ? photo.createdAt.format(DATE_TIME_FORMAT) : null,
       updatedAt: photo.updatedAt != null ? photo.updatedAt.format(DATE_TIME_FORMAT) : null,
       */
-      belongToId: photo.belongToId
+      //belongToId: photo.belongToId
     });
   }
 
@@ -154,7 +154,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       title: this.editForm.get(['title']).value,
       note: this.editForm.get(['note']).value,
       imageContentType: this.editForm.get(['imageContentType']).value,
-      image: this.editForm.get(['image']).value,
+      image: this.editForm.get(['image']).value
       /*imageSha1: this.editForm.get(['imageSha1']).value,
       thumbnailx1ContentType: this.editForm.get(['thumbnailx1ContentType']).value,
       thumbnailx1: this.editForm.get(['thumbnailx1']).value,
@@ -170,7 +170,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
       updatedAt:
         this.editForm.get(['updatedAt']).value != null ? moment(this.editForm.get(['updatedAt']).value, DATE_TIME_FORMAT) : undefined,
       */
-      belongToId: this.editForm.get(['belongToId']).value
+      //belongToId: this.editForm.get(['belongToId']).value
     };
   }
 

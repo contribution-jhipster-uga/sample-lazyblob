@@ -19,18 +19,10 @@
                     <input type="text" class="form-control" name="note" id="field_note"
                            formControlName="note"/>
                 </div>
-
-                <dt><span>Image</span></dt>
-                <dd>
-                    <img [src]="'/api/photos/' + photo.id + '/image' | authImage | async"
-                         style="min-height: 100%; max-width: 100%;" />
-                </dd>
-
-                <!--
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lazyblobApp.photo.image" for="field_image" [ngbTooltip]="'lazyblobApp.photo.help.image' | translate">Image</label>
                     <div>
-                        <img [src]="'/api/photos/' + photo.id + '/image' | authImage | async"
+                        <img [src]="'/api/photos/' + editForm.get('id').value + '/image' | authImage | async"
                              style="max-height: 30px;" alt="photo image"/>
 
                         <div *ngIf="editForm.get('image').value" class="form-text text-danger clearfix">
@@ -57,7 +49,6 @@
                         </small>
                     </div>
                 </div>
-                -->
 
                 <!--
                 <div class="form-group">
@@ -208,7 +199,7 @@
                         <input id="field_updatedAt" type="datetime-local" class="form-control" name="updatedAt" formControlName="updatedAt" placeholder="YYYY-MM-DD HH:mm"/>
                     </div>
                 </div>
-                -->
+
 
                 <div class="form-group">
                     <label class="form-control-label" jhiTranslate="lazyblobApp.photo.belongTo" for="field_belongTo">Belong To</label>
@@ -217,6 +208,7 @@
                         <option [ngValue]="albumOption.id" *ngFor="let albumOption of albums; trackBy: trackAlbumById">{{albumOption.title}}</option>
                     </select>
                 </div>
+                -->
             </div>
             <div>
                 <button type="button" id="cancel-save" class="btn btn-secondary"  (click)="previousState()">

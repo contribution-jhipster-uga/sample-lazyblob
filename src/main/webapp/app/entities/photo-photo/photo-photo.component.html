@@ -27,12 +27,12 @@
             <th scope="col"  jhiSortBy="thumbnailx1Sha1"><span jhiTranslate="lazyblobApp.photo.thumbnailx1Sha1">Thumbnailx 1 Sha 1</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="thumbnailx2"><span jhiTranslate="lazyblobApp.photo.thumbnailx2">Thumbnailx 2</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="thumbnailx2Sha1"><span jhiTranslate="lazyblobApp.photo.thumbnailx2Sha1">Thumbnailx 2 Sha 1</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="exif"><span jhiTranslate="lazyblobApp.photo.exif">Exif</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <!--th scope="col"  jhiSortBy="exif"><span jhiTranslate="lazyblobApp.photo.exif">Exif</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="extractedText"><span jhiTranslate="lazyblobApp.photo.extractedText">Extracted Text</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="detectedObjects"><span jhiTranslate="lazyblobApp.photo.detectedObjects">Detected Objects</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="createdAt"><span jhiTranslate="lazyblobApp.photo.createdAt">Created At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
             <th scope="col"  jhiSortBy="updatedAt"><span jhiTranslate="lazyblobApp.photo.updatedAt">Updated At</span> <fa-icon [icon]="'sort'"></fa-icon></th>
-            <th scope="col"  jhiSortBy="belongToTitle"><span jhiTranslate="lazyblobApp.photo.belongTo">Belong To</span> <fa-icon [icon]="'sort'"></fa-icon></th>
+            <th-- scope="col"  jhiSortBy="belongToTitle"><span jhiTranslate="lazyblobApp.photo.belongTo">Belong To</span> <fa-icon [icon]="'sort'"></fa-icon></th-->
             <th scope="col"></th>
             </tr>
             </thead>
@@ -63,7 +63,7 @@
                     <span *ngIf="photo.thumbnailx2">{{photo.thumbnailx2ContentType}}, {{byteSize(photo.thumbnailx2)}}</span>
                 </td>
                 <td>{{photo.thumbnailx2Sha1}}</td>
-                <td>{{photo.exif}}</td>
+                <!--td>{{photo.exif}}</td>
                 <td>{{photo.extractedText}}</td>
                 <td>{{photo.detectedObjects}}</td>
                 <td>{{photo.createdAt | date:'medium'}}</td>
@@ -72,7 +72,7 @@
                     <div *ngIf="photo.belongToId">
                         <a [routerLink]="['/album-photo', photo.belongToId , 'view' ]" >{{photo.belongToTitle}}</a>
                     </div>
-                </td>
+                </td-->
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"
