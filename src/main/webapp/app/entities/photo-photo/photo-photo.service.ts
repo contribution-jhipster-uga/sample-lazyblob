@@ -79,4 +79,13 @@ export class PhotoPhotoService {
     }
     return res;
   }
+
+  async transform(src: string): Promise<string> {
+    const imageBlob = await this.http.get(src, { responseType: 'blob' }).toPromise();
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.readAsDataURL(imageBlob);
+    });
+  }
 }

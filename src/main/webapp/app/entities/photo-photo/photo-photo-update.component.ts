@@ -57,8 +57,14 @@ export class PhotoPhotoUpdateComponent implements OnInit {
 
   ngOnInit() {
     this.isSaving = false;
+
     this.activatedRoute.data.subscribe(({ photo }) => {
-      this.updateForm(photo);
+      this.photoService.transform('/api/photos/' + photo.id + '/image').then(res => {
+        console.log('-----------------------------');
+
+        photo.image = res;
+        this.updateForm(photo);
+      });
     });
     this.albumService
       .query()

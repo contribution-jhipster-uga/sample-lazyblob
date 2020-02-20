@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpHeaders, HttpResponse, HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { JhiEventManager, JhiParseLinks, JhiDataUtils } from 'ng-jhipster';
@@ -36,7 +36,8 @@ export class PhotoPhotoComponent implements OnInit, OnDestroy {
     protected dataUtils: JhiDataUtils,
     protected router: Router,
     protected eventManager: JhiEventManager,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected http: HttpClient
   ) {
     this.itemsPerPage = ITEMS_PER_PAGE;
     this.routeData = this.activatedRoute.data.subscribe(data => {
@@ -129,17 +130,10 @@ export class PhotoPhotoComponent implements OnInit, OnDestroy {
     this.links = this.parseLinks.parse(headers.get('link'));
     this.totalItems = parseInt(headers.get('X-Total-Count'), 10);
     this.photos = data;
-    /* this.photos.forEach(p => {
-      this.photoService.http
-        .get('/api/photos/' + p.id + '/image', { responseType: 'arraybuffer' })
-        .subscribe(res => (p.image = window.URL.createObjectURL(new Blob([res], { type: 'image/png' }))));
-      this.photoService.http
-        .get('/api/photos/' + p.id + '/thumbnailx1', { responseType: 'arraybuffer' })
-        .subscribe(res => (p.thumbnailx1 = window.URL.createObjectURL(new Blob([res], { type: 'image/png' }))));
-      this.photoService.http
-        .get('/api/photos/' + p.id + '/thumbnailx2', { responseType: 'arraybuffer' })
-        .subscribe(res => (p.thumbnailx2 = window.URL.createObjectURL(new Blob([res], { type: 'image/png' }))));
-      console.log(p.image);
-    });*/
+    this.photos.forEach(p => {
+      this.photoService.transform('/api/photos/' + p.id + '/image').then(res => {
+        p.image = res;
+      });
+    });
   }
 }

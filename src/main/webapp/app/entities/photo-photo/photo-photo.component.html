@@ -43,7 +43,7 @@
                 <td>{{photo.note}}</td>
                 <td>
                     <a (click)="openFile(photo.imageContentType, photo.image)">
-                        <img [src]="'/api/photos/' + photo.id + '/image' | authImage | async"
+                        <img [src]="photo.image"
                              style="max-height: 30px;" alt="photo image"/>
                     </a>
                     <span *ngIf="photo.image">{{photo.imageContentType}}, {{byteSize(photo.image)}}</span>
