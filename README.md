@@ -28,6 +28,41 @@ Add the `help` flag on any command to see how you can use it. For example, `npm 
 
 The `npm run` command will list all of the scripts available to run for this project.
 
+## Dependency
+
+Installing pip3 for Python3
+
+```
+sudo apt install python3-pip
+```
+
+Installing Python3 packages
+
+```
+pip3 install opencv-python keras tensorflow==1.14.0 imageai
+```
+
+Installing Tesseract Ocr
+
+```
+sudo apt-get install tesseract-ocr
+```
+
+TODO : INSTALL MODULE
+
+Download neural networks
+
+```bash
+wget https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_coco_best_v2.0.1.h5
+wget https://github.com/OlafenwaMoses/ImageAI/releases/download/1.0/resnet50_weights_tf_dim_ordering_tf_kernels.h5
+```
+
+Moving these neural networks into your jhispter project :
+
+```
+[JHipster Project Folder]/src/main/java[Application Name]/indexation/imageAI/
+```
+
 ### PWA Support
 
 JHipster ships with PWA (Progressive Web App) support, and it's disabled by default. One of the main components of a PWA is a service worker.
