@@ -59,9 +59,8 @@ export class PhotoPhotoUpdateComponent implements OnInit {
     this.isSaving = false;
 
     this.activatedRoute.data.subscribe(({ photo }) => {
-      this.photoService.transform('/api/photos/' + photo.id + '/image').then(res => {
+      this.photoService.transform('api/photos/' + photo.id + '/image').then(res => {
         console.log('-----------------------------');
-
         photo.image = res;
         this.updateForm(photo);
       });
@@ -114,7 +113,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
           const filedContentType: string = field + 'ContentType';
           this.dataUtils.toBase64(file, base64Data => {
             this.editForm.patchValue({
-              [field]: 'data:image/png;base64,' + base64Data,
+              [field]: 'data:' + file.type + ';base64,' + base64Data,
               [filedContentType]: file.type
             });
           });
@@ -146,7 +145,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
   save() {
     this.isSaving = true;
     const photo = this.createFromForm();
-    photo.image = photo.image.replace('data:image/png;base64,', '');
+    photo.image = photo.image.replace('data:' + photo.imageContentType + ';base64,', '');
     if (photo.id !== undefined) {
       this.subscribeToSaveResponse(this.photoService.update(photo));
     } else {

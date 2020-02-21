@@ -134,6 +134,12 @@ export class PhotoPhotoComponent implements OnInit, OnDestroy {
       this.photoService.transform('/api/photos/' + p.id + '/image').then(res => {
         p.image = res;
       });
+      this.photoService.transform('api/photos/' + p.id + '/thumbnailx1').then(res => {
+        p.thumbnailx1 = res;
+      });
+      this.photoService.transform('api/photos/' + p.id + '/thumbnailx2').then(res => {
+        p.thumbnailx2 = res;
+      });
     });
   }
 }
