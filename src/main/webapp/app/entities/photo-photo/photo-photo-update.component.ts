@@ -146,7 +146,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
     this.isSaving = true;
     const photo = this.createFromForm();
     photo.image = photo.image.replace('data:' + photo.imageContentType + ';base64,', '');
-    if (photo.id !== undefined) {
+    if (photo.id !== undefined && photo.id != null) {
       this.subscribeToSaveResponse(this.photoService.update(photo));
     } else {
       this.subscribeToSaveResponse(this.photoService.create(photo));
