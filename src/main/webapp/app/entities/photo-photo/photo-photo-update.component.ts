@@ -114,7 +114,7 @@ export class PhotoPhotoUpdateComponent implements OnInit {
           const filedContentType: string = field + 'ContentType';
           this.dataUtils.toBase64(file, base64Data => {
             this.editForm.patchValue({
-              [field]: base64Data,
+              [field]: 'data:image/png;base64,' + base64Data,
               [filedContentType]: file.type
             });
           });
