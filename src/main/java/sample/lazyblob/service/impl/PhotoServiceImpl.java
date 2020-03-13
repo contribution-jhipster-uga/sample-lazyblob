@@ -1,7 +1,5 @@
 package sample.lazyblob.service.impl;
 
-import com.drew.imaging.ImageProcessingException;
-import net.sourceforge.tess4j.TesseractException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,14 +8,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sample.lazyblob.domain.Photo;
-import sample.lazyblob.indexation.Indexation;
 import sample.lazyblob.repository.PhotoLiteRepository;
 import sample.lazyblob.repository.PhotoRepository;
 import sample.lazyblob.service.PhotoService;
 import sample.lazyblob.service.dto.PhotoDTO;
 import sample.lazyblob.service.mapper.PhotoLiteMapper;
 import sample.lazyblob.service.mapper.PhotoMapper;
-import sample.lazyblob.service.util.MetadataUtil;
 import sample.lazyblob.service.util.MimeTypes;
 import sample.lazyblob.service.util.SHAUtil;
 import sample.lazyblob.service.util.ThumbnailUtil;
@@ -64,9 +60,6 @@ public class PhotoServiceImpl implements PhotoService {
         photoDTO.setThumbnailx2(null);
         photoDTO.setThumbnailx2Sha1(null);
         photoDTO.setThumbnailx2ContentType(null);
-        photoDTO.setExif(null);
-        photoDTO.setExtractedText(null);
-        photoDTO.setDetectedObjects(null);
     }
 
     /**
@@ -115,30 +108,6 @@ public class PhotoServiceImpl implements PhotoService {
                     photoDTO.setThumbnailx2(ThumbnailUtil.scale(photoDTO.getImage(), x2MaxDim, formatName));
                     photoDTO.setThumbnailx2Sha1(SHAUtil.hash(photoDTO.getThumbnailx2()));
                     photoDTO.setThumbnailx2ContentType(mimeType);
-
-                    String filename = Indexation.createImagefromByteArray(image);
-
-                    // Extract Exif
-                    try {
-                        photoDTO.setExif(MetadataUtil.extract(image));
-                    } catch (ImageProcessingException e) {
-                        log.warn("Can not extract the image metadata", e);
-                    }
-                    // TODO Extract GPS tag from Metadata
-
-                    // Extract Text with OCR
-                    try {
-                        photoDTO.setExtractedText(Indexation.parseTextFromImage(filename));
-                    } catch (TesseractException e) {
-                        log.warn("Can not extract the image text", e);
-                    }
-
-                    // Extract Objects with ImageAI
-                    try {
-                        photoDTO.setDetectedObjects(Indexation.imageAI(filename));
-                    } catch (Exception e) {
-                        log.warn("Can not extract the image detection object", e);
-                    }
                 } catch (IOException e) {
                     log.warn("Can not thumbnail the image", e);
                     reset(photoDTO);
@@ -150,9 +119,6 @@ public class PhotoServiceImpl implements PhotoService {
                 photoDTO.setThumbnailx2(photo.getThumbnailx2());
                 photoDTO.setThumbnailx2Sha1(photo.getThumbnailx2Sha1());
                 photoDTO.setThumbnailx2ContentType(photo.getThumbnailx2ContentType());
-                photoDTO.setExif(photo.getExif());
-                photoDTO.setExtractedText(photo.getExtractedText());
-                photoDTO.setDetectedObjects(photo.getDetectedObjects());
             }
         } else {
             reset(photoDTO);

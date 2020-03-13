@@ -149,9 +149,6 @@ public class PhotoResourceIT {
             .thumbnailx2(DEFAULT_THUMBNAILX_2)
             .thumbnailx2ContentType(DEFAULT_THUMBNAILX_2_CONTENT_TYPE)
             .thumbnailx2Sha1(DEFAULT_THUMBNAILX_2_SHA_1)
-            .exif(DEFAULT_EXIF)
-            .extractedText(DEFAULT_EXTRACTED_TEXT)
-            .detectedObjects(DEFAULT_DETECTED_OBJECTS)
             .createdAt(DEFAULT_CREATED_AT)
             .updatedAt(DEFAULT_UPDATED_AT);
         return photo;
@@ -175,9 +172,6 @@ public class PhotoResourceIT {
             .thumbnailx2(UPDATED_THUMBNAILX_2)
             .thumbnailx2ContentType(UPDATED_THUMBNAILX_2_CONTENT_TYPE)
             .thumbnailx2Sha1(UPDATED_THUMBNAILX_2_SHA_1)
-            .exif(UPDATED_EXIF)
-            .extractedText(UPDATED_EXTRACTED_TEXT)
-            .detectedObjects(UPDATED_DETECTED_OBJECTS)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         return photo;
@@ -215,9 +209,6 @@ public class PhotoResourceIT {
         assertThat(testPhoto.getThumbnailx2()).isEqualTo(DEFAULT_THUMBNAILX_2);
         assertThat(testPhoto.getThumbnailx2ContentType()).isEqualTo(DEFAULT_THUMBNAILX_2_CONTENT_TYPE);
         assertThat(testPhoto.getThumbnailx2Sha1()).isEqualTo(DEFAULT_THUMBNAILX_2_SHA_1);
-        assertThat(testPhoto.getExif()).isEqualTo(DEFAULT_EXIF);
-        assertThat(testPhoto.getExtractedText()).isEqualTo(DEFAULT_EXTRACTED_TEXT);
-        assertThat(testPhoto.getDetectedObjects()).isEqualTo(DEFAULT_DETECTED_OBJECTS);
         assertThat(testPhoto.getCreatedAt()).isEqualTo(DEFAULT_CREATED_AT);
         assertThat(testPhoto.getUpdatedAt()).isEqualTo(DEFAULT_UPDATED_AT);
     }
@@ -290,7 +281,7 @@ public class PhotoResourceIT {
             .andExpect(jsonPath("$.[*].createdAt").value(hasItem(DEFAULT_CREATED_AT.toString())))
             .andExpect(jsonPath("$.[*].updatedAt").value(hasItem(DEFAULT_UPDATED_AT.toString())));
     }
-    
+
     @Test
     @Transactional
     public void getPhoto() throws Exception {
@@ -935,9 +926,6 @@ public class PhotoResourceIT {
             .thumbnailx2(UPDATED_THUMBNAILX_2)
             .thumbnailx2ContentType(UPDATED_THUMBNAILX_2_CONTENT_TYPE)
             .thumbnailx2Sha1(UPDATED_THUMBNAILX_2_SHA_1)
-            .exif(UPDATED_EXIF)
-            .extractedText(UPDATED_EXTRACTED_TEXT)
-            .detectedObjects(UPDATED_DETECTED_OBJECTS)
             .createdAt(UPDATED_CREATED_AT)
             .updatedAt(UPDATED_UPDATED_AT);
         PhotoDTO photoDTO = photoMapper.toDto(updatedPhoto);
@@ -962,9 +950,6 @@ public class PhotoResourceIT {
         assertThat(testPhoto.getThumbnailx2()).isEqualTo(UPDATED_THUMBNAILX_2);
         assertThat(testPhoto.getThumbnailx2ContentType()).isEqualTo(UPDATED_THUMBNAILX_2_CONTENT_TYPE);
         assertThat(testPhoto.getThumbnailx2Sha1()).isEqualTo(UPDATED_THUMBNAILX_2_SHA_1);
-        assertThat(testPhoto.getExif()).isEqualTo(UPDATED_EXIF);
-        assertThat(testPhoto.getExtractedText()).isEqualTo(UPDATED_EXTRACTED_TEXT);
-        assertThat(testPhoto.getDetectedObjects()).isEqualTo(UPDATED_DETECTED_OBJECTS);
         assertThat(testPhoto.getCreatedAt()).isEqualTo(UPDATED_CREATED_AT);
         assertThat(testPhoto.getUpdatedAt()).isEqualTo(UPDATED_UPDATED_AT);
     }

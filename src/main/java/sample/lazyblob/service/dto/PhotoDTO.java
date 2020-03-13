@@ -30,7 +30,7 @@ public class PhotoDTO implements Serializable {
     /**
      * Image
      */
-    
+
     @ApiModelProperty(value = "Image", required = true)
     @Lob
     private byte[] image;
@@ -43,7 +43,7 @@ public class PhotoDTO implements Serializable {
     /**
      * Thumbnail x1
      */
-    
+
     //@ApiModelProperty(value = "Thumbnail x1", required = true)
     @ApiModelProperty(value = "Thumbnail x1")
     @Lob
@@ -57,7 +57,7 @@ public class PhotoDTO implements Serializable {
     /**
      * Thumbnail x2
      */
-    
+
     //@ApiModelProperty(value = "Thumbnail x2", required = true)
     @ApiModelProperty(value = "Thumbnail x2")
     @Lob
@@ -67,27 +67,6 @@ public class PhotoDTO implements Serializable {
     @Size(min = 40, max = 40)
     @Pattern(regexp = "([a-fA-F0-9]{40})?")
     private String thumbnailx2Sha1;
-
-    /**
-     * Extracted EXIF from the photo (LAZY)
-     */
-    @ApiModelProperty(value = "Extracted EXIF from the photo (LAZY)")
-    @Lob
-    private String exif;
-
-    /**
-     * Extracted text by the Tesseract OCR (LAZY)
-     */
-    @ApiModelProperty(value = "Extracted text by the Tesseract OCR (LAZY)")
-    @Lob
-    private String extractedText;
-
-    /**
-     * Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)
-     */
-    @ApiModelProperty(value = "Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)")
-    @Lob
-    private String detectedObjects;
 
     /**
      * Creation date
@@ -204,30 +183,6 @@ public class PhotoDTO implements Serializable {
         this.thumbnailx2Sha1 = thumbnailx2Sha1;
     }
 
-    public String getExif() {
-        return exif;
-    }
-
-    public void setExif(String exif) {
-        this.exif = exif;
-    }
-
-    public String getExtractedText() {
-        return extractedText;
-    }
-
-    public void setExtractedText(String extractedText) {
-        this.extractedText = extractedText;
-    }
-
-    public String getDetectedObjects() {
-        return detectedObjects;
-    }
-
-    public void setDetectedObjects(String detectedObjects) {
-        this.detectedObjects = detectedObjects;
-    }
-
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -293,9 +248,6 @@ public class PhotoDTO implements Serializable {
             ", thumbnailx1Sha1='" + getThumbnailx1Sha1() + "'" +
             ", thumbnailx2='" + getThumbnailx2() + "'" +
             ", thumbnailx2Sha1='" + getThumbnailx2Sha1() + "'" +
-            ", exif='" + getExif() + "'" +
-            ", extractedText='" + getExtractedText() + "'" +
-            ", detectedObjects='" + getDetectedObjects() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             ", belongTo=" + getBelongToId() +

@@ -63,16 +63,6 @@
                     <span *ngIf="photo.thumbnailx2">{{photo.thumbnailx2ContentType}}, {{byteSize(photo.thumbnailx2)}}</span>
                 </td>
                 <td>{{photo.thumbnailx2Sha1}}</td>
-                <!--td>{{photo.exif}}</td>
-                <td>{{photo.extractedText}}</td>
-                <td>{{photo.detectedObjects}}</td>
-                <td>{{photo.createdAt | date:'medium'}}</td>
-                <td>{{photo.updatedAt | date:'medium'}}</td>
-                <td>
-                    <div *ngIf="photo.belongToId">
-                        <a [routerLink]="['/album-photo', photo.belongToId , 'view' ]" >{{photo.belongToTitle}}</a>
-                    </div>
-                </td-->
                 <td class="text-right">
                     <div class="btn-group">
                         <button type="submit"

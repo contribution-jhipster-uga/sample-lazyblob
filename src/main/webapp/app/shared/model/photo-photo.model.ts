@@ -13,9 +13,6 @@ export interface IPhotoPhoto {
   thumbnailx2ContentType?: string;
   thumbnailx2?: any;
   thumbnailx2Sha1?: string;
-  exif?: any;
-  extractedText?: any;
-  detectedObjects?: any;
   createdAt?: Moment;
   updatedAt?: Moment;
   belongToTitle?: string;
@@ -36,9 +33,6 @@ export class PhotoPhoto implements IPhotoPhoto {
     public thumbnailx2ContentType?: string,
     public thumbnailx2?: any,
     public thumbnailx2Sha1?: string,
-    public exif?: any,
-    public extractedText?: any,
-    public detectedObjects?: any,
     public createdAt?: Moment,
     public updatedAt?: Moment,
     public belongToTitle?: string,

@@ -38,7 +38,7 @@ public class Photo implements Serializable {
     /**
      * Image
      */
-    
+
     @Lazy
     @Lob
     @Column(name = "image", nullable = false)
@@ -55,7 +55,7 @@ public class Photo implements Serializable {
     /**
      * Thumbnail x1
      */
-    
+
     @Lazy
     @Lob
     @Column(name = "thumbnailx_1", nullable = false)
@@ -72,7 +72,7 @@ public class Photo implements Serializable {
     /**
      * Thumbnail x2
      */
-    
+
     @Lazy
     @Lob
     @Column(name = "thumbnailx_2", nullable = false)
@@ -85,33 +85,6 @@ public class Photo implements Serializable {
     @Pattern(regexp = "([a-fA-F0-9]{40})?")
     @Column(name = "thumbnailx_2_sha_1", length = 40)
     private String thumbnailx2Sha1;
-
-    /**
-     * Extracted EXIF from the photo (LAZY)
-     */
-//    @Lazy
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "exif")
-    private String exif;
-
-    /**
-     * Extracted text by the Tesseract OCR (LAZY)
-     */
-//    @Lazy
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "extracted_text")
-    private String extractedText;
-
-    /**
-     * Detected objects into the photo (ImageAI, Tensorflow ...) (LAZY)
-     */
-//    @Lazy
-    @Lob
-    @Type(type = "org.hibernate.type.TextType")
-    @Column(name = "detected_objects")
-    private String detectedObjects;
 
     /**
      * Creation date
@@ -282,45 +255,6 @@ public class Photo implements Serializable {
         this.thumbnailx2Sha1 = thumbnailx2Sha1;
     }
 
-    public String getExif() {
-        return exif;
-    }
-
-    public Photo exif(String exif) {
-        this.exif = exif;
-        return this;
-    }
-
-    public void setExif(String exif) {
-        this.exif = exif;
-    }
-
-    public String getExtractedText() {
-        return extractedText;
-    }
-
-    public Photo extractedText(String extractedText) {
-        this.extractedText = extractedText;
-        return this;
-    }
-
-    public void setExtractedText(String extractedText) {
-        this.extractedText = extractedText;
-    }
-
-    public String getDetectedObjects() {
-        return detectedObjects;
-    }
-
-    public Photo detectedObjects(String detectedObjects) {
-        this.detectedObjects = detectedObjects;
-        return this;
-    }
-
-    public void setDetectedObjects(String detectedObjects) {
-        this.detectedObjects = detectedObjects;
-    }
-
     public Instant getCreatedAt() {
         return createdAt;
     }
@@ -392,9 +326,6 @@ public class Photo implements Serializable {
             ", thumbnailx2='" + getThumbnailx2() + "'" +
             ", thumbnailx2ContentType='" + getThumbnailx2ContentType() + "'" +
             ", thumbnailx2Sha1='" + getThumbnailx2Sha1() + "'" +
-            ", exif='" + getExif() + "'" +
-            ", extractedText='" + getExtractedText() + "'" +
-            ", detectedObjects='" + getDetectedObjects() + "'" +
             ", createdAt='" + getCreatedAt() + "'" +
             ", updatedAt='" + getUpdatedAt() + "'" +
             "}";

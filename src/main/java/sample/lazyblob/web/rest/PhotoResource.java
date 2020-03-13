@@ -176,9 +176,6 @@ public class PhotoResource {
         photoDTO.setThumbnailx2(null);
         //photoDTO.setThumbnailx2Sha1(null);
         //photoDTO.setThumbnailx2ContentType(null);
-        photoDTO.setExif(null);
-        photoDTO.setExtractedText(null);
-        photoDTO.setDetectedObjects(null);
     }
 
 	/**
